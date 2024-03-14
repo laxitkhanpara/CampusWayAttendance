@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #registrationForm,
+        #userInfo {
+            display: none;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #emailDisplay {
+            font-size: 18px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="registrationForm">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <div id="userInfo">
+        <h2>User Information</h2>
+        <p id="emailDisplay"></p>
+    </div>
+
+    <script>
+        // JavaScript code for handling registration and fetching data from cookies
+
+        // Function to set a cookie
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+        // Function to get a cookie
+        function getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        // Function to handle registration form submission
+        document.getElementById("registerForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+            // Here you would typically send this data to your server for storage
+            // For simplicity, let's just set a cookie with the email
+            setCookie("userEmail", email, 365); // Set cookie to last for 1 year
+            // You can also redirect the user to a different page or display a success message
+            alert("Registration successful!");
+        });
+
+        // Function to fetch and display user information from cookie
+        window.onload = function () {
+            var userEmail = getCookie("userEmail");
+            if (userEmail) {
+                document.getElementById("registrationForm").style.display = "none";
+                document.getElementById("userInfo").style.display = "block";
+                document.getElementById("emailDisplay").innerText = "Email: " + userEmail;
+            }
+        };
+    </script>
+</body>
+
+</html>
